@@ -1,0 +1,46 @@
+●空プロジェクト作成方法(Visual Studio 2015)
+
+[概要]
+コンソールアプリやWindowsアプリを作る時に、テンプレート作成により余計なライブラリを追加することなく、
+シンプルなプロジェクトを作成する。
+
+[Win32プロジェクト]
+
+１．Visual Studio 2015を起動して[ファイル]-[新規作成]-[プロジェクト]を選択する。
+２．[新しいプロジェクト]ウィンドウで[テンプレート]-[Visual C++]で[Win32プロジェクト]を選択する。
+３．[Win32 プロジェクト ウィザード]ウインドウで、[アプリケーション設定]を選択[追加オプション]の[空プロジェクト]にチェックをして「完了」ボタンを押す。
+４．Main.cppを作成する。以下のソースコードを記述。
+
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	return 0;
+}
+
+５．Main.cppをプロジェックとの「ソースファイル」に追加する。
+６．ビルド完了で空プロジェクト完成です。
+
+[Win32コンソールアプリケーション]
+
+１．Visual Studio 2015を起動して[ファイル]-[新規作成]-[プロジェクト]を選択する。
+２．[新しいプロジェクト]ウィンドウで[テンプレート]-[Visual C++]で[Win32コンソールアプリケーション]を選択する。
+３．[Win32 プロジェクト ウィザード]ウインドウで、[アプリケーション設定]を選択[追加オプション]の[空プロジェクト]にチェックをして「完了」ボタンを押す。
+４．maain.cppを作成する。以下のソースコードを記述。
+
+#include <stdio.h>
+
+int main()
+{
+	printf("Hello World!");
+	return 0;
+}
+
+５．main.cppをプロジェックとの「ソースファイル」に追加する。
+６．ビルド完了で空プロジェクト完成です。
+
+---------------
+2020/04/21 崎浜

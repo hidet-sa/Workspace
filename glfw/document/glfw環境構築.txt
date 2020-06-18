@@ -1,0 +1,107 @@
+●glfwの環境構築
+
+[概要]
+glfwライブラリで、ディスクトップでopenglを使ったウィンドウ、コンテキスト、およびサーフェスを作成し、
+入力とイベントを受け取るためのシンプルなAPIを提供している。オープンソースのマルティプラットフォームライブラリです。
+開発のためにシンプルな環境を構築する手順です。
+
+[ダウンロード]
+以下のサイトからglfwのコンパイル済みバイナリを取得します。(64ビットWindowsバイナリ or 32ビットWindowsバイナリ)
+
+https://www.glfw.org/download.html
+
+※以降「32ビットWindowsバイナリ」をダウンロードしたデータを元に進めます。
+
+「glfw-3.3.2.bin.WIN32.zip」を展開、以下のディレクトリ構成になっています。
+
+├─docs
+│  └─html
+│      └─search
+├─include
+│  └─GLFW
+├─lib-mingw
+├─lib-mingw-w64
+├─lib-vc2010
+├─lib-vc2012
+├─lib-vc2013
+├─lib-vc2015
+├─lib-vc2017
+└─lib-vc2019
+
+[プロジェクト作成]
+１．Visual Studio 2015で「空プロジェクト」を作成します。
+２．次に、ダウロードしたデータから必要な「include」「lib-vc2015」をコピペして、
+　　作成したプロジェクトのSourceディレクトリ配下にペーストする。以下のディレクトリ構造にする。
+　　※「lib-vc2015]を[lib]に名前を変更しています。
+
+project
+├─Debug
+│  └─project.tlog
+└─Source
+    ├─glfw
+    │  ├─include
+    │  │  └─GLFW
+    │  └─lib
+    └Main.cpp
+
+３．Main.cppを以下の内容にする。
+
+#include <windows.h>
+#include <GLFW/glfw3.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	if (!glfwInit())
+		exit(EXIT_FAILURE);
+
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
+
+	while (!glfwWindowShouldClose(window))
+	{
+		/*
+		** ここで OpenGL による描画を行う
+		*/
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	glfwDestroyWindow(window);
+	glfwTerminate();
+
+	return EXIT_SUCCESS;
+}
+
+４．ライブラリやライブラリパス、インクルードパスを設定する。
+・インクルードディレクトリ設定
+　→プロジェクトプロパティの[構成プロパティ]-[VC++ディレクトリ]にある「インクルードディレクトリ」に、
+　　「$(ProjectDir)Source\glfw\include」を追加する。
+
+・追加のインクルードディレクトリ設定
+　→プロジェクトプロパティの[構成プロパティ]-[C/C++]-[全般]にある「追加のインクルードディレクトリ」に、
+　　「$(ProjectDir)Source\glfw\include」を追加する。
+
+・追加のライブラリディレクトリ設定
+　→プロジェクトプロパティの[構成プロパティ]-[リンカー]-[全般]にある「追加のライブラリディレクトリ」に、
+　　「$(ProjectDir)Source\glfw\lib」を追加する。
+
+・追加の依存ファイル設定
+　→プロジェクトプロパティの[構成プロパティ]-[リンカー]-[入力]にある「追加の依存ファイル」に、
+　　「glfw3.lib」「opengl32.lib」を追加する。
+
+・リンク前のイベント設定
+　→プロジェクトプロパティの[構成プロパティ]-[ビルドイベント]-[リンク前のイベント]にある「コマンドライン」に、
+　　「copy "$(ProjectDir)Source\assimp\lib\assimp*.dll" "$(OutDir)"」を追加する。
+
+５．ビルドする。
+　　ビルドに成功して、実行で、ウインドウが表示されれば成功です。
+
+---------------
+2020.04.21 崎浜

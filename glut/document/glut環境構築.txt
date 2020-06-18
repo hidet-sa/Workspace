@@ -1,0 +1,94 @@
+●glut環境構築
+
+[概要]
+glutはopenglを拡張ライブラリですが、フレームワーク的な面も持っているクロスプラットフォームです。
+glut環境を構築するためのシンプルな手順です。
+
+
+[ダウンロード]
+オリジナルのGLUTは長い間メンテナンスされていないようです。互換のあるfreeglutを使用される事が多いようです。
+そこで、ここではfreeglutで環境構築をします。
+
+freeglutライブラリ
+http://freeglut.sourceforge.net/
+
+ライブラリ作成方法は「freeglutForVS.pdf」に詳しく載っています。そちらをご確認ください。
+http://teacher.nagano-nct.ac.jp/fujita/files/dsp/freeglutForVS.pdf
+
+[プロジェクト作成]
+
+１．空プロジェクトを作成します。Visual Studio 2015で「空のコンソールアプリケーション」を作作成します。
+２．以下のソースをMain.cppに以下のソースを記述（またはコピペ）します。
+　　作成したMain.cppをプロジェクトの「ソースファイル」に登録します。
+
+#include <GL/glut.h>
+#include <stdio.h>
+
+void display(void)
+{
+}
+
+int main(int argc, char *argv[])
+{
+	glutInit(&argc, argv);
+	glutCreateWindow(argv[0]);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+
+３．freeglutのライブラリとインクルードファイルをプロジェクトのSourceディレクトリ配下に置く。
+　　以下ディレクトリ構成。
+
+Source
+│  Main.cpp
+│  
+└─glut
+    ├─include
+    │  └─GL
+    │          freeglut.h
+    │          freeglut_ext.h
+    │          freeglut_std.h
+    │          glut.h
+    │          
+    └─lib
+        ├─x64
+        │      freeglut.dll
+        │      freeglut.lib
+        │      freeglut_static.lib
+        │      
+        └─x86
+                freeglut.dll
+                freeglut.lib
+                freeglut_static.lib
+
+４．ライブラリやライブラリパス、インクルードパスを設定
+　　※以下はDebug(x86)ターゲットでの設定になります。他ターゲットも同じ箇所の設定になりますので省略。
+
+・「インクルードディレクトリ」設定
+　プロジェクトプロパティの[構成プロパティ]-[VC++ディレクトリ]の「インクルードディレクトリ」に、
+　「$(ProjectDir)Source\glut\include」を追記する。
+
+・「追加のインクルードディレクトリ」設定
+　プロジェクトプロパティの[構成プロパティ]-[C/C++]-[全般]の「追加のインクルードディレクトリ」に、
+　「$(ProjectDir)Source\glut\include」を追記する。
+
+・「追加のライブラリディレクトリ」設定
+　プロジェクトプロパティの[構成プロパティ]-[リンカー]-[全般]の「追加のライブラリディレクトリ」に、
+　「$(ProjectDir)Source\glut\lib\x86」を追記する。
+
+・「追加の依存ファイル」設定
+　プロジェクトプロパティの[構成プロパティ]-[リンカー]-[入力]の「追加の依存ファイル」に、
+　「greeglut.lib」「freeglut_static.lib」を追記する。
+
+５．実行時に必要なDLLをビルド中にコピペする処理を追加。
+
+プロジェクトプロパティの[構成プロパティ]-[ビルドイベント]-[リンク前のイベント]でにある「コマンドライン」に
+以下のDLLを実行ファイル配下にコピーする処理を記述する。
+
+xcopy /Y /Q /S /E /D "$(ProjectDir)Source\glut\lib\x86\freeglut.dll" "$(OutDir)"
+
+６．ビルドして実行して、コンソールアプリとウインドウが立ち上がったら完成です。
+
+---------------
+2020.04.22 崎浜

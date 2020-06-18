@@ -1,0 +1,292 @@
+assimpライブラリの導入までの手順
+
+[概要]
+assimpは、3Dモデルを読み込むためのライブラリです。数多くの3Dデータを読み込む事が出来る。
+開発環境はVisual Studio 2015です。
+
+[ダウンロード]
+assimpの公式サイト
+https://www.assimp.org/
+assimpのダウンロードサイト(github)
+https://github.com/assimp/assimp
+
+上記のダウンロードサイトから最新バージョンのソースをダウンロードします。ここではv5.0.1が最新バージョンです。
+ダウンロードしたファイル名は「assimp-5.0.1.zip」です。
+
+[Assimpライブラリ作成]
+ライブラリを作成します。CMakeが必要になります（https://cmake.org/download/）
+ライブラリ作成手順は「Assimpライブラリ作成.pdf」にありますので参照ください。
+このファイルにはAssimpサンプルを実行するまでの手順もありますので、併せて参照ください。
+
+もう一つのライブラリ作成方法として、バッチファイルからライブラリを作成する方法があります。
+１．assimpディレクトリ配下にある「BUILDBINARIES_EXAMPLE.bat」をテキストで開く。
+２．１５行目当たりに「SET GENERATOR=Visual Studio 15 2017」がありますが、こちらを「SET GENERATOR=Visual Studio 14 2015」とします。
+３．cmakeは環境設定でパスが通っている場合は問題ないのですが、パスが通っていない場合は、以下のように追加変更してください。
+
+SET SOURCE_DIR=.
+
+:: cmake path
+SET CMAKE_DIR=C:/Workspace/tools/cmake/bin/
+
+:: For generators see "cmake --help"
+SET GENERATOR=Visual Studio 14 2015
+
+SET BINARIES_DIR="./BINARIES/Win32"
+%CMAKE_DIR%cmake CMakeLists.txt -G "%GENERATOR%" -S %SOURCE_DIR% -B %BINARIES_DIR%
+...
+
+４．BUILDBINARIES_EXAMPLE.batを実行する。「BINARIES」ディレクトリが生成されて「BINARIES\Win32\code\Release」に
+　　assimp-vc140-mt.dll, assimp-vc140-mt.libがあれば生成に成功しています。
+５．以上です。
+
+[Assimpドキュメント作成]
+assimpドキュメントを作成する。
+doxygen( http://www.doxygen.jp/)を使いますので、
+以下のURLからダウンロードします（※ただし削除されている可能性あり、その場合はwindowsで使えるバイナリdoxygenを用意）
+https://jaist.dl.sourceforge.net/project/doxygen/snapshots/doxygen-1.8-svn/windows/doxygenw20140924_1_8_8.zip
+
+１．doxygenを使用してドキュメントを作成します。CMakeのGUIを起動して、assimpライブラリ作成時に「Configure」ボタンを押下後に「BUILD_DOCS」にチェックを入れます。
+　　ただdoxygenのパスが指定されていないので「DOXYGEN_EXECUTABLE」にdoxygenを置いたパスを設定して、再度「Configure」ボタンを押下します。
+　　「Generate」ボタンを押下すると「Generating done]」が出たらOKです。
+
+	assimp配下のdocにDoxygenファイルが出来ましたので、テキストエディタで開いて設定オプション「INPUT」を以下のように変更します。
+
+[変更前]
+INPUT                  =  \
+                         C:/Workspace/work/assimp/assimp \
+                         C:/Workspace/work/assimp/assimp \
+                         C:/Workspace/work/assimp/assimp/include/ \
+                         C:/Workspace/work/assimp/assimp/doc/dox.h \
+                         C:/Workspace/work/assimp/assimp/code/BaseImporter.h
+
+[変更後]
+INPUT                  =  \
+                         C:/Workspace/work/assimp/assimp/doc/dox.h \
+                         C:/Workspace/work/assimp/assimp \
+                         C:/Workspace/work/assimp/assimp/include/ \
+                         C:/Workspace/work/assimp/assimp/code/BaseImporter.h
+
+２．次にコマンドプロンプトから[ >doxygen Doxyfile ]を実行します。
+　　doc/AssimpDoc_Html/index.htmlをブラウザで開くとドキュメントが表示されたらOKです（もしくはAssimpDoc.chmを開く）
+
+　　※以下のような「Internal error」が出た場合はdoxygen.exe自身が対応していない部分でのエラーですので、
+　　doxygen.exe自身のバージョンアップするのが良いと思います。
+
+　　..\src\classdef.cpp<2105>: Internal error: Requested unknown option HIDE_COMPOUND_REFERENCE!
+
+[シンプルプロジェクト作成]
+assimpのライブラリとインクルードファイルで簡単なモデル読み込みおよび、glfwで描画まで行う。
+
+１．空プロジェクト作成する。
+２．glfwを使ったシンプルな環境を構築する。以下のようになディレクトリ配置。
+
+project
+├─Debug
+│  └─project.tlog
+└─Source
+    ├─glfw
+    │  ├─include
+    │  │  └─GLFW
+    │  └─lib
+    └Main.cpp
+
+３．assimpライブラリ設定、環境構築する。
+　　・[ライブラリ生成]で作成したassimpライブラリは以下のディレクトリ配下にあります。
+　　　→assimp-5.0.1\bin\Release\assimp-vc140-mt.dll
+　　　→assimp-5.0.1\lib\Release\assimp-vc140-mt.lib
+　　・インクルードファイルは以下のディレクトリ配下にあります。
+　　　→assimp-5.0.1\include
+
+　　・assimpインクルードファイルとライブラリ(lib,dll)を以下のようにディレクトリ配置する。
+
+project
+│  Main.cpp
+│  
+├─assimp
+│  ├─include
+│  │  └─assimp
+│  │      │  aabb.h
+│  │      │  ai_assert.h
+│  │      │  anim.h
+│  │      │  BaseImporter.h
+│  │      │  Bitmap.h
+│  │      │  BlobIOSystem.h
+│  │      │  ByteSwapper.h
+│  │      │  camera.h
+│  │      │  cexport.h
+│  │      │  cfileio.h
+│  │      │  cimport.h
+│  │      │  color4.h
+│  │      │  color4.inl
+│  │      │  config.h
+│  │      │  CreateAnimMesh.h
+│  │      │  DefaultIOStream.h
+│  │      │  DefaultIOSystem.h
+│  │      │  DefaultLogger.hpp
+│  │      │  Defines.h
+│  │      │  defs.h
+│  │      │  Exceptional.h
+│  │      │  Exporter.hpp
+│  │      │  fast_atof.h
+│  │      │  GenericProperty.h
+│  │      │  Hash.h
+│  │      │  Importer.hpp
+│  │      │  importerdesc.h
+│  │      │  IOStream.hpp
+│  │      │  IOStreamBuffer.h
+│  │      │  IOSystem.hpp
+│  │      │  irrXMLWrapper.h
+│  │      │  light.h
+│  │      │  LineSplitter.h
+│  │      │  LogAux.h
+│  │      │  Logger.hpp
+│  │      │  LogStream.hpp
+│  │      │  Macros.h
+│  │      │  material.h
+│  │      │  material.inl
+│  │      │  MathFunctions.h
+│  │      │  matrix3x3.h
+│  │      │  matrix3x3.inl
+│  │      │  matrix4x4.h
+│  │      │  matrix4x4.inl
+│  │      │  MemoryIOWrapper.h
+│  │      │  mesh.h
+│  │      │  metadata.h
+│  │      │  NullLogger.hpp
+│  │      │  ParsingUtils.h
+│  │      │  pbrmaterial.h
+│  │      │  postprocess.h
+│  │      │  Profiler.h
+│  │      │  ProgressHandler.hpp
+│  │      │  qnan.h
+│  │      │  quaternion.h
+│  │      │  quaternion.inl
+│  │      │  RemoveComments.h
+│  │      │  scene.h
+│  │      │  SceneCombiner.h
+│  │      │  SGSpatialSort.h
+│  │      │  SkeletonMeshBuilder.h
+│  │      │  SmoothingGroups.h
+│  │      │  SmoothingGroups.inl
+│  │      │  SpatialSort.h
+│  │      │  StandardShapes.h
+│  │      │  StreamReader.h
+│  │      │  StreamWriter.h
+│  │      │  StringComparison.h
+│  │      │  StringUtils.h
+│  │      │  Subdivision.h
+│  │      │  texture.h
+│  │      │  TinyFormatter.h
+│  │      │  types.h
+│  │      │  vector2.h
+│  │      │  vector2.inl
+│  │      │  vector3.h
+│  │      │  vector3.inl
+│  │      │  version.h
+│  │      │  Vertex.h
+│  │      │  XMLTools.h
+│  │      │  ZipArchiveIOSystem.h
+│  │      │  
+│  │      ├─Compiler
+│  │      │      poppack1.h
+│  │      │      pstdint.h
+│  │      │      pushpack1.h
+│  │      │      
+│  │      └─port
+│  │          └─AndroidJNI
+│  │                  AndroidJNIIOSystem.h
+│  │                  
+│  └─lib
+│          assimp-vc140-mt.dll
+│          assimp-vc140-mt.lib
+│          
+└─glfw
+    ├─include
+    │  └─GLFW
+    │          glfw3.h
+    │          glfw3native.h
+    │          
+    └─lib
+            glfw3.dll
+            glfw3.lib
+            glfw3dll.lib
+
+　　・Main.cppに以下のコードを記述する（※このままではビルドが通らないの次の項目にある設定を行う）
+
+#include <windows.h>
+#include <GLFW/glfw3.h>
+//assimp
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	if (!glfwInit())
+		exit(EXIT_FAILURE);
+
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
+
+	//assimp log 初期化。
+	C_STRUCT aiLogStream stream;
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT, NULL);
+	aiAttachLogStream(&stream);
+
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_FILE, "assimp_log.txt");
+	aiAttachLogStream(&stream);
+
+	while (!glfwWindowShouldClose(window))
+	{
+		/*
+		** ここで OpenGL による描画を行う
+		*/
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	glfwDestroyWindow(window);
+	glfwTerminate();
+
+	//assimp log終了化。
+	aiDetachAllLogStreams();
+
+	return EXIT_SUCCESS;
+}
+
+　　・プロジェクトにライブラリやインクルードパスを設定する。
+　　　・追加のインクルードディレクトリ設定
+　　　　→プロジェクトプロパティの[構成プロパティ]-[C/C++]-[全般]にある「追加のインクルードディレクトリ」に、
+　　　　「$(ProjectDir)Source\assimp\include」を追加する。
+
+　　　・追加のライブラリディレクトリ設定
+　　　　→プロジェクトプロパティの[構成プロパティ]-[リンカー]-[全般]にある「追加のライブラリディレクトリ」に、
+　　　　「$(ProjectDir)Source\assimp\lib」を追加する。
+
+　　　・追加の依存ファイル設定
+　　　　→プロジェクトプロパティの[構成プロパティ]-[リンカー]-[入力]にある「追加の依存ファイル」に「assimp-vc140-mt.lib.lib」を追加する。
+
+　　　・リンク前のイベント設定
+　　　　→プロジェクトプロパティの[構成プロパティ]-[ビルドイベント]-[リンク前のイベント]にある「コマンドライン」に、
+　　　　「copy "$(ProjectDir)Source\assimp\lib\assimp*.dll" "$(OutDir)"」を追加する。
+
+　　・以上です。ビルドが通ればOKです。
+
+４．assimpによるモデル読み込み。
+　　３）でプロジェクトを作り、ライブラリ環境を構築したので、そのプロジェクトでモデル読み込みコードを書きます。ドキュメントを参考にすればよいです。
+　　※projectのDump.cppに読み込んだモデルデータ情報をダンプしました。
+
+５．読み込んだデータをopenGLで描画。
+　　OpenGL処理はassimpのサンプル「SimpleTexturedOpenGL」を代用して、テクスチャ読み込みについてもサンプルで用いられている「stbライブラリ」を使用。
+　　モデルはサンプルの「OBJ/spider.obj」を使用。動くように調整。
+
+　　stbライブラリ：https://github.com/nothings/stb
+
+※このサンプルをたたき台にassimpモデルをOpenGLで環境、モデル描画、アニメーション、シェーダーなどの処理を構築できれば。

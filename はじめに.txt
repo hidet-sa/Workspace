@@ -1,0 +1,33 @@
+●開発用のライブラリ
+
+以下ディレクトリ構造です。
+
+.
+├─assimp
+│  ├─document
+│  └─project
+├─cscript
+├─git_test
+├─glfw
+│  ├─document
+│  └─project
+├─glm
+│  ├─document
+│  └─project
+├─glut
+│  ├─document
+│  ├─download
+│  └─project
+├─imgui
+│  ├─document
+│  └─project
+├─sqlite
+│  ├─download
+│  └─project
+└─空プロジェクト
+    ├─document
+    └─project
+
+
+---------------
+2020.06.05 崎浜

@@ -1,0 +1,96 @@
+Info,  T23220: this is my info-call
+Info,  T23220: Load models/OBJ/spider.obj
+Debug, T23220: Assimp 5.0.0 x86 msvc shared singlethreaded
+Info,  T23220: Found a matching importer for this file format: Wavefront Object Importer.
+Info,  T23220: Import root directory is 'models/OBJ\'
+Debug, T23220: UpdateImporterScale scale set: %f1
+Info,  T23220: Entering post processing pipeline
+Debug, T23220: RemoveRedundantMatsProcess begin
+Info,  T23220: RemoveRedundantMatsProcess finished. Removed 0 redundant and 2 unused materials.
+Debug, T23220: GenUVCoordsProcess begin
+Debug, T23220: GenUVCoordsProcess finished
+Debug, T23220: TriangulateProcess begin
+Debug, T23220: TriangulateProcess finished. There was nothing to be done.
+Debug, T23220: FindDegeneratesProcess begin
+Warn,  T23220: Found 14 degenerated primitives
+Skipping one or more lines with the same contents
+Debug, T23220: FindDegeneratesProcess finished
+Debug, T23220: SortByPTypeProcess begin
+Info,  T23220: Points: 4, Lines: 4, Triangles: 19, Polygons: 0 (Meshes, X = removed)
+Debug, T23220: SortByPTypeProcess finished
+Debug, T23220: FindInvalidDataProcess begin
+Error, T23220: FindInvalidDataProcess fails on mesh positions: All vectors are identical
+Error, T23220: Deleting mesh: Unable to continue without vertex positions
+Error, T23220: FindInvalidDataProcess fails on mesh positions: All vectors are identical
+Error, T23220: Deleting mesh: Unable to continue without vertex positions
+Error, T23220: FindInvalidDataProcess fails on mesh positions: All vectors are identical
+Error, T23220: Deleting mesh: Unable to continue without vertex positions
+Error, T23220: FindInvalidDataProcess fails on mesh positions: All vectors are identical
+Error, T23220: Deleting mesh: Unable to continue without vertex positions
+Info,  T23220: FindInvalidDataProcess finished. Found issues ...
+Debug, T23220: SplitLargeMeshesProcess_Triangle begin
+Debug, T23220: SplitLargeMeshesProcess_Triangle finished. There was nothing to do
+Debug, T23220: Generate spatially-sorted vertex cache
+Debug, T23220: GenVertexNormalsProcess begin
+Debug, T23220: GenVertexNormalsProcess finished. Normals are already there
+Debug, T23220: CalcTangentsProcess begin
+Info,  T23220: Tangents are undefined for line and point meshes
+Skipping one or more lines with the same contents
+Info,  T23220: CalcTangentsProcess finished. Tangents have been calculated
+Debug, T23220: JoinVerticesProcess begin
+Debug, T23220: Mesh 0 (HLeib01) | Verts in: 240 out: 71 | ~70.4167%
+Debug, T23220: Mesh 1 (OK) | Verts in: 180 out: 91 | ~49.4444%
+Debug, T23220: Mesh 2 (Bein1Li) | Verts in: 294 out: 111 | ~62.2449%
+Debug, T23220: Mesh 3 (Bein1Re) | Verts in: 294 out: 117 | ~60.2041%
+Debug, T23220: Mesh 4 (Bein2Li) | Verts in: 294 out: 113 | ~61.5646%
+Debug, T23220: Mesh 5 (Bein2Re) | Verts in: 294 out: 115 | ~60.8844%
+Debug, T23220: Mesh 6 (Bein3Re) | Verts in: 294 out: 107 | ~63.6054%
+Debug, T23220: Mesh 7 (Bein3Li) | Verts in: 294 out: 107 | ~63.6054%
+Debug, T23220: Mesh 8 (Bein4Re) | Verts in: 294 out: 113 | ~61.5646%
+Debug, T23220: Mesh 9 (Bein4Li) | Verts in: 294 out: 113 | ~61.5646%
+Debug, T23220: Mesh 10 (Zahn) | Verts in: 14 out: 9 | ~35.7143%
+Debug, T23220: Mesh 11 (Zahn) | Verts in: 84 out: 33 | ~60.7143%
+Debug, T23220: Mesh 12 (klZahn) | Verts in: 14 out: 9 | ~35.7143%
+Debug, T23220: Mesh 13 (klZahn) | Verts in: 84 out: 35 | ~58.3333%
+Debug, T23220: Mesh 14 (Kopf) | Verts in: 270 out: 79 | ~70.7407%
+Debug, T23220: Mesh 15 (Brust) | Verts in: 60 out: 17 | ~71.6667%
+Debug, T23220: Mesh 16 (Kopf2) | Verts in: 270 out: 79 | ~70.7407%
+Debug, T23220: Mesh 17 (Zahn2) | Verts in: 14 out: 9 | ~35.7143%
+Debug, T23220: Mesh 18 (Zahn2) | Verts in: 84 out: 33 | ~60.7143%
+Debug, T23220: Mesh 19 (klZahn2) | Verts in: 14 out: 9 | ~35.7143%
+Debug, T23220: Mesh 20 (klZahn2) | Verts in: 84 out: 35 | ~58.3333%
+Debug, T23220: Mesh 21 (Auge) | Verts in: 114 out: 36 | ~68.4211%
+Debug, T23220: Mesh 22 (Duplicate05) | Verts in: 114 out: 36 | ~68.4211%
+Info,  T23220: JoinVerticesProcess finished | Verts in: 3992 out: 1477 | ~63.001
+Debug, T23220: SplitLargeMeshesProcess_Vertex begin
+Debug, T23220: SplitLargeMeshesProcess_Vertex finished. There was nothing to do
+Debug, T23220: LimitBoneWeightsProcess begin
+Debug, T23220: LimitBoneWeightsProcess end
+Debug, T23220: ImproveCacheLocalityProcess begin
+Debug, T23220: Mesh %u | ACMR in: 0 out: 1.2375 | ~0.937524.2424
+Debug, T23220: Mesh %u | ACMR in: 1 out: 1.85 | ~1.6510.8108
+Debug, T23220: Mesh %u | ACMR in: 2 out: 1.60204 | ~1.2959219.1083
+Debug, T23220: Mesh %u | ACMR in: 3 out: 1.68367 | ~1.3571419.3939
+Debug, T23220: Mesh %u | ACMR in: 4 out: 1.62245 | ~1.3163318.8679
+Debug, T23220: Mesh %u | ACMR in: 5 out: 1.64286 | ~1.3061220.4969
+Debug, T23220: Mesh %u | ACMR in: 6 out: 1.56122 | ~1.2244921.5686
+Debug, T23220: Mesh %u | ACMR in: 7 out: 1.56122 | ~1.2346920.915
+Debug, T23220: Mesh %u | ACMR in: 8 out: 1.62245 | ~1.2959220.1258
+Debug, T23220: Mesh %u | ACMR in: 9 out: 1.62245 | ~1.3163318.8679
+Error, T23220: This algorithm works on triangle meshes only
+Debug, T23220: Mesh %u | ACMR in: 11 out: 1.32143 | ~1.1785710.8108
+Error, T23220: This algorithm works on triangle meshes only
+Debug, T23220: Mesh %u | ACMR in: 13 out: 1.42857 | ~1.2512.5
+Debug, T23220: Mesh %u | ACMR in: 14 out: 1.43333 | ~1.0111129.4574
+Debug, T23220: Mesh %u | ACMR in: 15 out: 0.9 | ~0.95-5.55556
+Debug, T23220: Mesh %u | ACMR in: 16 out: 1.43333 | ~1.0555626.3566
+Error, T23220: This algorithm works on triangle meshes only
+Debug, T23220: Mesh %u | ACMR in: 18 out: 1.32143 | ~1.1785710.8108
+Error, T23220: This algorithm works on triangle meshes only
+Debug, T23220: Mesh %u | ACMR in: 20 out: 1.42857 | ~1.2512.5
+Debug, T23220: Mesh %u | ACMR in: 21 out: 1.28947 | ~122.449
+Debug, T23220: Mesh %u | ACMR in: 22 out: 1.28947 | ~122.449
+Info,  T23220: Cache relevant are 19 meshes (1312 faces). Average output ACMR is 1.22332
+Debug, T23220: ImproveCacheLocalityProcess finished. 
+Info,  T23220: Leaving post processing pipeline
+Info,  T23220: Import of scene models/OBJ/spider.obj succeeded.
