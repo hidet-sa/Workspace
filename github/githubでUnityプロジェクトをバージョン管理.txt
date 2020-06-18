@@ -1,0 +1,19 @@
+○Unityプロジェクトをバージョン管理(git hub)
+githubを使ってバージョン管理を行うようにする環境設定です。
+
+１．githubでアカウントを取得します。
+２．githubにてリモートリポジトリを作成する。
+３．２）「作成したリポジトリのURLを取得する。たとえば「https://github.com/hidet-sa/TestProject.git」です。
+４．Unityプロジェクトを作成して、以下の設定を確認します。
+　　[編集]->[ProjectSettings]でVersion ControlがVisible Meta Files、Asset SerializationがForce Textになっているのを確認。
+５．作成したプロジェクトのあるディレクトリで、tortoiseGitで「Gitここにリポジトリを作成」を選択する。
+　　「Bare を生成（作業ディレクトリーを作りません）」にチェックを入れずにOKする。
+６．「Gitコミット」する。
+７．「Git 同期...」を選択して、Git同期用のウインドウにある「管理」ボタンを選択します。
+　　「URL」と「プッシュURL」にgithubで作成したリモートリポジトリのURLを追加し、「新規に追加/保存」ボタンを押下する。
+８．５）のウインドウで「プッシュ」ボタンを押下します。
+　　※プッシュで「fatal: refusing to merge unrelated histories」のエラー出た場合、「マージ」を行う事でエラーが解消されます。
+９．以上。
+
+---------------
+2020.06.16 崎浜
