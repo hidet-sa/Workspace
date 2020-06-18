@@ -1,0 +1,98 @@
+﻿CPPUnitについてライブラリ作成からサンプルコードまでを説明します。
+
+○CPPUnit lib作成。
+１．CPPUnitをダウンロードする。
+　　以下のサイトから最新バージョンの「CppUnit」をダウンロードする。
+　　https://sourceforge.net/projects/cppunit/files/cppunit/
+
+２．ダウンロードしたデータ（cppunit-1.12.1.tar.gz）を解凍、
+　　プロジェクトファイル（cppunit-1.12.1\src\CppUnitLibraries.dsw）を「VisualStudio2015」で開く。
+
+３．cppunitプロジェクトをターゲット(Debug, Release)それぞれビルドします。
+　　ビルドしてそれぞれDebugターゲットはcppunitd.lib, Releaseターゲットはcppunit.libです。
+
+○CPPUnit プロジェクトに追加。
+既存プロジェクトへCPPUnitを追加する方法です。
+VisualStudioでプロジェクトのプロパティを開きます。ターゲットReleaseでの設定を説明します。
+ターゲットDebugはライブラリファイル名がcppunitd.libですので、そこだけターゲットReleaseとの違いです。
+
+　　１．「cppunit-1.12.1\include」のincludeディレクトリ配下を既存プロジェクトのディレクトリへ追加する。
+　　２．cppunit.libを既存プロジェクトリのディレクトリへ追加する。
+　　３．VisualStudioで既存プロジェクトを立ち上げてプロパティから[構成プロパティ]-[C/C++]-[全般]で「追加のインクルード ディレクトリ」に、１）で追加したincludeディレクトリのパスを記入。
+　　４．[構成プロパティ]-[リンカー]-[全般]で「追加のライブラリ ディレクトリ」に２）で追加したcppunit.libのあるディレクトリパスを記入。
+　　５．[構成プロパティ]-[リンカー]-[入力]で「追加の依存ファイル」に[cppunit.lib]を記入（※ターゲットDebugの場合はcppunitd.libと記入）
+　　６．[構成プロパティ]-[ビルド イベント]-[リンク前のイベント]の「コマンド ライン」で以下の記入、パスは１）で追加したディレクトリの場所です。
+
+		if not exist "$(OutDir)" mkdir "$(OutDir)"
+		xcopy /Y /Q /S /E /D "$(ProjectDir)..\Classes\External\CPPUnit\prebuilt\*" "$(OutDir)"
+
+　　７．既存プロジェクトのビルドする。エラーが無ければOKです。
+
+○CPPUnit サンプルコード。
+テストクラス（CalculatorTest）がCPPUnitの本体です。
+またテストするためのCPPUnitの実行処理はmain関数の処理で出来ます。
+テストメソッドを追加するには、CalculatorTestにpushNumberTest_push0メソッドに習って追加します。
+CPPUNIT_TEST_SUITEとCPPUNIT_TEST_SUIT_ENDの間に追加したメソッドをCPPUNIT_TEST("追加したメソッド名")で追加。
+
+//インクルード
+#include "cppunit/ui/text/TestRunner.h"
+#include "cppunit/extensions/HelperMacros.h"
+#include "cppunit/TextOutputter.h"
+#include "cppunit/XmlOutputter.h"
+
+//テスト対象のクラス
+class Calculator
+{
+public:
+	Calculator() {}
+public:
+	bool pushNumber(int num) {
+		return false;
+	}
+};
+
+//テストクラス
+class CalculatorTest : public CppUnit::TestFixture {
+
+	CPPUNIT_TEST_SUITE(CalculatorTest);
+	CPPUNIT_TEST(pushNumberTest_push0);
+	CPPUNIT_TEST_SUITE_END();
+
+public:
+	void setUp() {
+		_calc = new Calculator();
+	}
+	void tearDown() {
+		delete _calc;
+	}
+
+protected:
+	Calculator *_calc;
+
+public:
+	void pushNumberTest_push0() {
+		auto calc = _calc;
+		CPPUNIT_ASSERT(calc->pushNumber(0) == true);
+	}
+};
+
+int main()
+{
+	CPPUNIT_TEST_SUITE_REGISTRATION(CalculatorTest);
+	std::stringstream ss;
+
+	CppUnit::TextUi::TestRunner runner;
+	runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
+
+	CppUnit::Outputter* outputter = new CppUnit::TextOutputter(&runner.result(), ss);
+	runner.setOutputter(outputter);
+
+	auto ret = runner.run();
+
+	outputter->write();
+	
+	//結果出力
+	printf("%s", ss.str().c_str());
+
+	return ret;
+}

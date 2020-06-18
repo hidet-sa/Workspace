@@ -1,0 +1,119 @@
+〇gitをCUIを使って作業する時のメモ。
+
+１．リポジトリ（マスター）作成、およびローカルリポジトリ作成。
+２．ローカルブランチを作成してローカルブランチでのコミット。
+３．ローカルブランチで作業したことをマスターへマージして、リモートリポジトリへpushする。
+４．マスターからpullしてローカルブランチにマージ。
+５．pullしてローカルブランチへマージした際、コンフリクトが起きた時の対応。
+６．ローカルブランチを削除。
+
+
+１．リポジトリ（マスター）作成、およびローカルリポジトリ作成。
+　今回はサーバーがないのでローカルに作成する。OneDrive内にリモートリポジトリを作成。
+　　１．OneDrive内にロカールリポジトリ用ディレクトリ作成（ディレクトリ名はgit_remoteで進める）
+　　２．git_remote内で右クリックにて[git bash here]を選択。gitCUI起動します。
+　　３．git --bare init --share と入力。これでリモートリポジトリ作成終了。
+
+　　４．次に別ディレクトリにて作業用ディレクトリを作成（ディレクトリ名はgit_workで進める）
+　　５．git_work内で、右クリックにて[git bash here]を選択。gitCUI起動。
+　　６．git init と入力。これでローカルリポジトリ作成。
+
+　　７．git add main.cpp ファイルを追加する。
+
+　　８．git remote add origin [1で作ったOneDrive上のリポジトリフォルダ]
+　　　　※今回は「/c/Users/sakihama-h/OneDrive - KADOKAWA CORPORATION/workspace/program/git_test」を指定。ディレクトリを区切るのは[/]になります。
+　　９．８）に続けて以下のコマンドを入力。必要な環境設定。
+　　　　git config branch.master.remote origin
+　　　　git config branch.master.merge refs/heads/master
+　　　　git config --global push.default simple
+　　　　git config --global core.autoCRLF false
+　　　　git config --global user.email [メールアドレス]
+　　　　git config --global user.name [ユーザ名]
+
+　　１０．ローカルリポジトリの内容をリモートリポジトリに登録する。以下のコマンド入力。
+　　　　git add .
+　　　　git commit -m "テスト版登録"
+　　　　git push origin master
+　　１１．以上。
+
+２．ローカルブランチを作成してローカルブランチでのコミット
+　　１．git branch <新しく作成するブランチ名：dev/sakihama> <基にするブランチ名：master>
+　　２．git branch ブランチ確認
+　　３．git switch dev/sakihama ローカルブランチへ切り替え。
+　　４．ソース(main.cpp)を編集してコミットする。
+　　５．git add main.cpp
+　　６．git commit -m "編集した"
+　　７．以上（４から６を繰り返して作業する）
+
+３．ローカルブランチで作業したことをマスターへマージして、リモートリポジトリへpushする。
+　　１．ローカルブランチで作業した事をマスターへマージ（反映）する。
+　　　　git switch master マスターブランチへ移動。
+　　　　git merge dev/sakihama ローカルブランチの情報をマージ。
+　　２．リモートリポジトリへpushする（マスターブランチにいること）
+　　　　git push -u origin master
+
+４．マスターからpullしてローカルブランチにマージ。
+　　１．他の人の更新分をマスターブランチへ反映する。マスターブランチにいること。
+　　　　git switch master マスターブランチへ切り替え。
+　　　　git pull 他の人の反映分を受け取る。
+
+５．pullしてローカルブランチへマージした際、コンフリクトが起きた時の対応。
+　　１．ローカルブランチで作業した事をマスターへマージ。
+　　　　git checkout master マスターブランチへ切り替え。
+　　　　git merge dev/sakihama ローカルブランチの情報をマスターへマージ。
+　　２．他の人の更新分をマスターブランチへ反映。
+　　　　git pull 他の人の反映分を受け取る（※ここでコンフリクト！）
+
+		↓↓↓以下こんな感じでコンフリクトが出る。
+		remote: Enumerating objects: 5, done.
+		remote: Counting objects: 100% (5/5), done.
+		remote: Compressing objects: 100% (3/3), done.
+		remote: Total 3 (delta 1), reused 0 (delta 0)
+		Unpacking objects: 100% (3/3), 351 bytes | 18.00 KiB/s, done.
+		From C:/Users/sakihama-h/OneDrive - KADOKAWA CORPORATION/workspace/program/git_test
+		   2396b25..ca31881  master     -> origin/master
+		Auto-merging sub.cpp
+		CONFLICT (content): Merge conflict in sub.cpp
+		Automatic merge failed; fix conflicts and then commit the result.
+
+	３．コンフリクトの起きたソースをマージして、リモートリポジトリへ登録。
+　　　　手順として他の人の更新分のファイルとこちらの更新分のファイルを比較してマージする。
+　　　　１．git checkout --theirs sub.cpp　他の人の反映分を優先して取得。
+　　　　２．cp sub.cpp sub-.cpp 他の人の反映分をコピーして別名にする。
+　　　　３．git checkout --ours sub.cpp こちらの反映分を優先して取得。
+　　　　４．WinMergeでsub.cpp sub-.cppを比較＆マージする。
+　　　　５．git add sub.cpp マージを反映。
+　　　　６．git commit -m "マージしました"
+　　　　７．git push -u origin master リモートリポジトリへ登録。
+　　　　８．以上。
+
+　　４．コンフリクトのマージ分をローカルブランチへ反映。
+　　　　ローカルブランチへ切り替えして、マージする。
+　　　　１．git checkout dev/sakihama ローカルブランチへ切り替え。
+　　　　２．git merge master マスターのマージ分を反映。
+　　　　３．以上。
+
+６．ローカルブランチを削除。
+　　１．マスターブランチへ切り替えして、ローカルブランチを削除する。
+　　　　１．git checkout master マスターブランチへ切り替え。
+　　　　２．git branch -d dev/sakihama ローカルブランチ削除。
+　　　　３．git brahch -a ローカルブランチが削除されたか確認。
+　　２．ローカルブランチでリモートブランチが残ることがありますので、その場合にそのリモートブランチも削除する。
+　　　　１．git branch -a ブランチリストを表示。
+
+　　　　↓↓↓こんな感じで処理される。
+		$ git branch -a
+		* master
+		  remotes/origin/dev/sakihama　　←コレ！（ローカルブランチが紐づいたリモートブランチ）
+		  remotes/origin/master
+
+　　　　２．git push origin :dev/sakihama　リモートブランチ削除。
+
+　　　　↓↓↓こんな感じで処理内容が出る。
+		To C:/Users/sakihama-h/OneDrive - KADOKAWA CORPORATION/workspace/program/git_test/
+		 - [deleted]         dev/sakihama
+
+　　　　３．git branch -a ブランチ確認（ローカルブランチがなくなったことを確認）
+　　　　４．以上。
+
+

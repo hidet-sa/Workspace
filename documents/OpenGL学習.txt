@@ -1,0 +1,14 @@
+OpenGL
+
+学習のための参照サイト
+
+GPU(Game Programming unit)サイトのOpenGL
+http://gameprogrammingunit.web.fc2.com/gl/
+opengl-tutorial（OpenGL 3.3 以降）glmについてあり。
+http://www.opengl-tutorial.org/jp/
+OpenGL入門（OpenGL Version 1.1 に準拠）
+http://wisdom.sakura.ne.jp/system/opengl/index.html
+GLUTによる「手抜き」OpenGL入門
+https://tokoik.github.io/opengl/libglut.html
+GLUTによる「手抜き」OpenGL入門の「今までにあった質問」
+https://tokoik.github.io/opengl/faq.html
